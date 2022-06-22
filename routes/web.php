@@ -42,10 +42,7 @@ Route::get('/admin/pelanggan', function () {
 });
 
 Route::get('/test', function () {
-    $sql = "SELECT * FROM pelanggan WHERE id = :id";
-    $result = DB::selectOne($sql, ["id" => 1]);
-    dd($result->nama);
-    return view('welcome');
+    return 'test';
 });
 
 Route::get('/bootstrap', function () {
