@@ -17,13 +17,24 @@ node {
         }
     }
 
-    // Testing
+    // Deploy Dev
     stage("Deploy"){
         docker.image('agung3wi/alpine-rsync:1.1').inside('-u root') {
             sshagent (credentials: ['ssh-dev']) {
                 sh 'mkdir -p ~/.ssh'
                 sh 'ssh-keyscan -H "$IP_DEV" > ~/.ssh/known_hosts'
                 sh "rsync -rav --delete ./ ubuntu@$IP_DEV:/home/ubuntu/dev.kelasdevops.xyz/ --exclude=.env --exclude=storage --exclude=.git"
+            }
+        }
+    }
+
+    // Integration test
+    stage("Test"){
+        docker.image('agung3wi/alpine-rsync:1.1').inside('-u root') {
+            sshagent (credentials: ['ssh-dev']) {
+                sh 'mkdir -p ~/.ssh'
+                sh 'ssh-keyscan -H "$IP_DEV" > ~/.ssh/known_hosts'
+                sh "ssh ubuntu@$IP_DEV 'cd /home/ubuntu/dev.kelasdevops.xyz/ && php artisan test --testsuite=Feature'"
             }
         }
     }
