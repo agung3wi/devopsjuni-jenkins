@@ -27,6 +27,6 @@ class MathPowerTest extends TestCase
     public function test_pangkat_negatif()
     {
         $hasil = MathHelper::pangkat(2, -3);
-        $this->assertEquals(0, $hasil);
+        $this->assertEquals(1 / 8, $hasil);
     }
 }
